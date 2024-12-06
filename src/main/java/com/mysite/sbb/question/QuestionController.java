@@ -102,4 +102,14 @@ public class QuestionController {
         this.qService.deleteQuestion(q);
         return "redirect:/";
     }
+
+    //추천하기
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/vote/{id}")
+    public String voidQuestion(@PathVariable int id, Principal principal) {
+        Question q = this.qService.getQuestion(id);
+        SiteUser siteUser = uService.getUser(principal.getName());
+        this.qService.vote(q, siteUser);
+        return "redirect:/question/detail/"+id;
+    }
 }

@@ -40,4 +40,14 @@ public class AnswerService {
         a.setModifyDate(LocalDateTime.now());
         aRepo.save(a);
     }
+    //답변 삭제하기
+    public void delete(Answer answer) {
+        this.aRepo.delete(answer);
+    }
+
+    //추천
+    public void vote(Answer a, SiteUser siteUser) {
+        a.getVoter().add(siteUser);
+        this.aRepo.save(a);
+    }
 }

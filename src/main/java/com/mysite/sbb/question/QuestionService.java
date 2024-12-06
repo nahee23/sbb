@@ -53,4 +53,10 @@ public class QuestionService {
     public void deleteQuestion(Question q) {
         qRepo.delete(q);
     }
+
+    //추천하기
+    public void vote(Question q, SiteUser siteUser) {
+        q.getVoter().add(siteUser);
+        this.qRepo.save(q);
+    }
 }

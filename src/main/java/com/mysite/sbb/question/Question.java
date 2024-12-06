@@ -9,6 +9,7 @@ import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 //엔티티는 JPA의 테이블과 같은 클래스
 @Entity
@@ -44,6 +45,10 @@ public class Question {
     //DB에서는 보이지 않음
     @OneToMany (mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<Answer> answerList;
+
+    //질문과 추천인과의 관계가 다 대 다 many to many 관계임
+    @ManyToMany
+    Set<SiteUser> voter;
 
 
 }

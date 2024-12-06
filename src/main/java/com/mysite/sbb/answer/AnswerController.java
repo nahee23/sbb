@@ -75,4 +75,26 @@ public class AnswerController {
         this.aService.modify(answer, answerForm.getContent());
         return String.format("redirect:/question/detail/%s", answer.getQuestion().getId());
     }
+
+    //답변 삭제
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/delete/{id}")
+    public String answerDelete(Principal principal, @PathVariable("id") Integer id) {
+        Answer answer = this.aService.getAnswer(id);
+        if (!answer.getAuthor().getUsername().equals(principal.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
+        }
+        this.aService.delete(answer);
+        return String.format("redirect:/question/detail/%s", answer.getQuestion().getId());
+    }
+
+    //추천
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/vote/{id}")
+    public String answerVote(Principal principal, @PathVariable("id") Integer id) {
+        Answer answer = this.aService.getAnswer(id);
+        SiteUser siteUser = this.uService.getUser(principal.getName());
+        this.aService.vote(answer, siteUser);
+        return String.format("redirect:/question/detail/%s", answer.getQuestion().getId());
+    }
 }
